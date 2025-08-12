@@ -191,10 +191,12 @@ export default function SessionEditor() {
 
   if (isLoading)
     return (
-      <Box sx={{ p: 4, maxWidth: 800, mx: "auto" }}>
+      <Box
+        sx={{ p: { xs: 2, md: 4 }, maxWidth: 800, mx: "auto", width: "100%" }}
+      >
         <Skeleton
           variant="rectangular"
-          width={300}
+          width={isMobile ? 200 : 300}
           height={40}
           sx={{
             mb: 3,
@@ -228,16 +230,16 @@ export default function SessionEditor() {
             }}
           />
         ))}
-        <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
+        <Box sx={{ display: "flex", gap: 2, mt: 3, flexWrap: "wrap" }}>
           <Skeleton
             variant="rectangular"
-            width={120}
+            width={isMobile ? "100%" : 120}
             height={40}
             sx={{ borderRadius: 2 }}
           />
           <Skeleton
             variant="rectangular"
-            width={120}
+            width={isMobile ? "100%" : 120}
             height={40}
             sx={{ borderRadius: 2 }}
           />
@@ -256,6 +258,7 @@ export default function SessionEditor() {
           alignItems: "center",
           justifyContent: "center",
           minHeight: "50vh",
+          width: "100%",
         }}
       >
         <Typography color="error.main" variant="h6" gutterBottom>
@@ -273,6 +276,7 @@ export default function SessionEditor() {
             "&:hover": {
               background: theme.palette.error.dark,
             },
+            width: isMobile ? "100%" : "auto",
           }}
         >
           Back to Sessions
@@ -283,57 +287,72 @@ export default function SessionEditor() {
   return (
     <Box
       sx={{
-        p: { xs: 2, md: 4 },
+        p: { xs: 2, sm: 3, md: 4 },
         maxWidth: 800,
         mx: "auto",
         position: "relative",
+        width: "100%",
+        boxSizing: "border-box",
+        overflowX: "hidden",
       }}
     >
-      {/* Decorative background elements */}
+      {/* Decorative background elements - adjusted for mobile */}
       <Box
         sx={{
           position: "absolute",
-          top: -100,
-          right: -100,
-          width: 300,
-          height: 300,
+          top: { xs: -50, md: -100 },
+          right: { xs: -50, md: -100 },
+          width: { xs: 200, md: 300 },
+          height: { xs: 200, md: 300 },
           background: `radial-gradient(circle, ${theme.palette.primary.light}20 0%, transparent 70%)`,
           zIndex: 0,
           opacity: 0.3,
+          display: { xs: "none", sm: "block" },
         }}
       />
 
       <Box
         sx={{
           position: "absolute",
-          bottom: -50,
-          left: -50,
-          width: 200,
-          height: 200,
+          bottom: { xs: -30, md: -50 },
+          left: { xs: -30, md: -50 },
+          width: { xs: 150, md: 200 },
+          height: { xs: 150, md: 200 },
           background: `radial-gradient(circle, ${theme.palette.secondary.light}20 0%, transparent 70%)`,
           zIndex: 0,
           opacity: 0.2,
+          display: { xs: "none", sm: "block" },
         }}
       />
 
-      <Box sx={{ position: "relative", zIndex: 1 }}>
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+        }}
+      >
+        {/* Header Section */}
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column-reverse", sm: "row" },
             justifyContent: "space-between",
-            alignItems: "center",
-            mb: 4,
-            flexWrap: "wrap",
+            alignItems: { xs: "flex-start", sm: "center" },
+            mb: { xs: 3, md: 4 },
             gap: 2,
+            width: "100%",
           }}
         >
           <motion.div
             whileHover={{ x: -3 }}
             transition={{ type: "spring", stiffness: 300 }}
+            style={{ width: isMobile ? "100%" : "auto" }}
           >
             <Button
               startIcon={<ArrowBack />}
               onClick={() => navigate("/my-sessions")}
+              fullWidth={isMobile}
               sx={{
                 textTransform: "none",
                 fontWeight: 600,
@@ -357,6 +376,10 @@ export default function SessionEditor() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
+                style={{
+                  width: isMobile ? "100%" : "auto",
+                  order: isMobile ? -1 : 0,
+                }}
               >
                 <Alert
                   severity={
@@ -376,7 +399,7 @@ export default function SessionEditor() {
                     )
                   }
                   sx={{
-                    maxWidth: 400,
+                    width: "100%",
                     alignItems: "center",
                     py: 0,
                     borderRadius: 2,
@@ -393,7 +416,7 @@ export default function SessionEditor() {
         <Paper
           elevation={0}
           sx={{
-            p: { xs: 3, md: 4 },
+            p: { xs: 2, sm: 3, md: 4 },
             borderRadius: 3,
             background: theme.palette.background.paper,
             border: `1px solid ${theme.palette.divider}`,
@@ -402,10 +425,11 @@ export default function SessionEditor() {
               boxShadow: theme.shadows[4],
             },
             transition: "all 0.3s ease",
+            width: "100%",
           }}
         >
           <Typography
-            variant="h3"
+            variant={isMobile ? "h4" : "h3"}
             component="h1"
             gutterBottom
             sx={{
@@ -442,6 +466,7 @@ export default function SessionEditor() {
               display: "flex",
               flexDirection: "column",
               gap: 3,
+              width: "100%",
             }}
           >
             <TextField
@@ -469,7 +494,7 @@ export default function SessionEditor() {
               }}
             />
 
-            <Box sx={{ position: "relative" }}>
+            <Box sx={{ position: "relative", width: "100%" }}>
               <TextField
                 fullWidth
                 label="Tags (comma separated)"
@@ -528,6 +553,7 @@ export default function SessionEditor() {
                       right: 0,
                       zIndex: 1,
                       marginTop: 4,
+                      width: "100%",
                     }}
                   >
                     <Paper
@@ -540,6 +566,7 @@ export default function SessionEditor() {
                         display: "flex",
                         flexWrap: "wrap",
                         gap: 1,
+                        width: "100%",
                       }}
                     >
                       {commonTags.map((tag) => (
@@ -629,16 +656,19 @@ export default function SessionEditor() {
                 gap: 2,
                 mt: 3,
                 flexWrap: "wrap",
+                width: "100%",
               }}
             >
               <Tooltip title={!isDirty ? "No changes to save" : ""}>
-                <span>
+                <span style={{ width: isMobile ? "100%" : "auto" }}>
                   <motion.div
                     whileHover={isDirty ? { scale: 1.05 } : {}}
                     whileTap={isDirty ? { scale: 0.95 } : {}}
+                    style={{ width: "100%" }}
                   >
                     <Button
                       variant="outlined"
+                      fullWidth={isMobile}
                       startIcon={
                         saveStatus.type === "saving" ? (
                           <CircularProgress size={20} />
@@ -654,7 +684,7 @@ export default function SessionEditor() {
                         fontWeight: 600,
                         px: 3,
                         py: 1.5,
-                        minWidth: 140,
+                        minWidth: isMobile ? "100%" : 140,
                         borderColor: theme.palette.primary.main,
                         color: theme.palette.primary.main,
                         "&:hover": {
@@ -672,9 +702,11 @@ export default function SessionEditor() {
               <motion.div
                 whileHover={form.title.trim() ? { scale: 1.05 } : {}}
                 whileTap={form.title.trim() ? { scale: 0.95 } : {}}
+                style={{ width: isMobile ? "100%" : "auto" }}
               >
                 <Button
                   variant="contained"
+                  fullWidth={isMobile}
                   startIcon={
                     publish.isLoading ? (
                       <CircularProgress size={20} color="inherit" />
@@ -690,7 +722,7 @@ export default function SessionEditor() {
                     fontWeight: 600,
                     px: 3,
                     py: 1.5,
-                    minWidth: 140,
+                    minWidth: isMobile ? "100%" : 140,
                     background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                     boxShadow: `0 4px 15px ${theme.palette.primary.light}40`,
                     "&:hover": {
