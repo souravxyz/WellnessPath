@@ -28,7 +28,7 @@ export const verifyEmail = async (req, res) => {
     const { subject, html } = getWelcomeEmailTemplate(user.name);
     await sendEmail({ to: user.email, subject, html });
 
-    res.redirect(`${process.env.CLIENT_URL}/dashboard?verified=true`);
+    res.redirect(`${process.env.CLIENT_URL}/login?verified=true`);
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: "Verification link invalid or expired" });
@@ -59,7 +59,7 @@ export const register = async (req, res) => {
     const verifyToken = jwt.sign({ id: user._id }, JWT_SECRET, {
       expiresIn: "1d",
     });
-    const verifyURL = `${process.env.CLIENT_URL}/verify/${verifyToken}`;
+    const verifyURL = `${process.env.BASE_URL}/api/auth/verify/${verifyToken}`;
     const verifyEmailData = getVerifyEmailTemplate(user.name, verifyURL);
     await sendEmail({
       to: user.email,
@@ -81,7 +81,6 @@ export const register = async (req, res) => {
     res.status(500).json({ message: "Registration failed" });
   }
 };
-
 
 // ✅ Login
 export const login = async (req, res) => {

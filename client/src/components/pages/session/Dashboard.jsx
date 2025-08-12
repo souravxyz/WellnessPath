@@ -131,47 +131,67 @@ export default function Dashboard() {
       : null;
 
   return (
-    <Box sx={{ p: { xs: 2, md: 4 }, position: "relative" }}>
+    <Box
+      sx={{
+        p: { xs: 2, sm: 3, md: 4 },
+        position: "relative",
+        width: "100%",
+        maxWidth: "100%",
+        overflowX: "hidden",
+        boxSizing: "border-box",
+      }}
+    >
       {/* Decorative background elements */}
       <Box
         sx={{
           position: "absolute",
-          top: -100,
-          right: -100,
-          width: 300,
-          height: 300,
+          top: { xs: -50, md: -100 },
+          right: { xs: -50, md: -100 },
+          width: { xs: 200, md: 300 },
+          height: { xs: 200, md: 300 },
           background: `radial-gradient(circle, ${theme.palette.primary.light}20 0%, transparent 70%)`,
           zIndex: 0,
           opacity: 0.3,
+          display: { xs: "none", sm: "block" },
         }}
       />
 
       <Box
         sx={{
           position: "absolute",
-          bottom: -50,
-          left: -50,
-          width: 200,
-          height: 200,
+          bottom: { xs: -30, md: -50 },
+          left: { xs: -30, md: -50 },
+          width: { xs: 150, md: 200 },
+          height: { xs: 150, md: 200 },
           background: `radial-gradient(circle, ${theme.palette.secondary.light}20 0%, transparent 70%)`,
           zIndex: 0,
           opacity: 0.2,
+          display: { xs: "none", sm: "block" },
         }}
       />
 
-      <Box sx={{ position: "relative", zIndex: 1 }}>
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: "100%",
+        }}
+      >
+        {/* Header Section */}
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             justifyContent: "space-between",
-            alignItems: "center",
-            mb: 4,
-            flexWrap: "wrap",
+            alignItems: { xs: "flex-start", sm: "center" },
+            mb: { xs: 3, md: 4 },
             gap: 2,
+            width: "100%",
           }}
         >
           <Typography
-            variant="h3"
+            variant={isMobile ? "h4" : "h3"}
             component="h1"
             sx={{
               fontWeight: 800,
@@ -180,6 +200,7 @@ export default function Dashboard() {
               WebkitTextFillColor: "transparent",
               letterSpacing: -0.5,
               position: "relative",
+              lineHeight: 1.2,
               "&:after": {
                 content: '""',
                 position: "absolute",
@@ -195,11 +216,16 @@ export default function Dashboard() {
             Your Wellness Dashboard
           </Typography>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{ width: isMobile ? "100%" : "auto" }}
+          >
             <Button
               variant="contained"
               onClick={() => navigate("/my-sessions/new")}
               startIcon={<Add />}
+              fullWidth={isMobile}
               sx={{
                 borderRadius: 50,
                 px: 4,
@@ -213,6 +239,8 @@ export default function Dashboard() {
                   boxShadow: `0 6px 20px ${theme.palette.primary.light}60`,
                 },
                 transition: "all 0.3s ease",
+                whiteSpace: "nowrap",
+                minWidth: isMobile ? "100%" : "auto",
               }}
             >
               New Session
@@ -225,8 +253,9 @@ export default function Dashboard() {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" },
-            gap: 3,
-            mb: 4,
+            gap: { xs: 2, sm: 3 },
+            mb: { xs: 3, md: 4 },
+            width: "100%",
           }}
         >
           <StatCard
@@ -251,7 +280,7 @@ export default function Dashboard() {
 
         <Divider
           sx={{
-            my: 4,
+            my: { xs: 3, md: 4 },
             background: `linear-gradient(90deg, transparent, ${theme.palette.primary.light}, transparent)`,
             height: 1,
             border: "none",
@@ -260,11 +289,17 @@ export default function Dashboard() {
 
         {/* Latest Session */}
         {latestSession && (
-          <Box sx={{ mb: 4 }}>
+          <Box sx={{ mb: { xs: 3, md: 4 }, width: "100%" }}>
             <Typography
-              variant="h5"
+              variant={isMobile ? "h6" : "h5"}
               gutterBottom
-              sx={{ fontWeight: 600, mb: 2 }}
+              sx={{
+                fontWeight: 600,
+                mb: 2,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
             >
               Latest Session
             </Typography>
@@ -276,16 +311,19 @@ export default function Dashboard() {
           </Box>
         )}
 
-        {/* All Sessions */}
+        {/* All Sessions Header */}
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: { xs: "flex-start", sm: "center" },
             mb: 2,
+            gap: 1,
+            width: "100%",
           }}
         >
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+          <Typography variant={isMobile ? "h6" : "h5"} sx={{ fontWeight: 600 }}>
             Your Sessions
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -293,21 +331,24 @@ export default function Dashboard() {
           </Typography>
         </Box>
 
+        {/* Sessions List */}
         <AnimatePresence>
           {sessions.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
+              style={{ width: "100%" }}
             >
               <Paper
                 elevation={0}
                 sx={{
-                  p: 4,
+                  p: { xs: 3, md: 4 },
                   textAlign: "center",
                   borderRadius: 3,
                   background: theme.palette.background.paper,
                   border: `1px solid ${theme.palette.divider}`,
+                  width: "100%",
                 }}
               >
                 <motion.div
@@ -329,7 +370,7 @@ export default function Dashboard() {
                     }}
                   />
                 </motion.div>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant={isMobile ? "h6" : "h5"} gutterBottom>
                   No sessions created yet
                 </Typography>
                 <Typography color="text.secondary" sx={{ mb: 3 }}>
@@ -367,7 +408,8 @@ export default function Dashboard() {
                   sm: "repeat(2, 1fr)",
                   lg: "repeat(3, 1fr)",
                 },
-                gap: 3,
+                gap: { xs: 2, sm: 3 },
+                width: "100%",
               }}
             >
               {sessions.map((session) => (
@@ -377,6 +419,7 @@ export default function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                   whileHover={{ y: -5 }}
+                  style={{ width: "100%" }}
                 >
                   <SessionCard
                     session={session}
@@ -392,16 +435,17 @@ export default function Dashboard() {
   );
 }
 
-// Enhanced Stat Card Component
+// Stat Card Component
 const StatCard = ({ value, label, icon, color }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <motion.div whileHover={{ y: -3 }}>
+    <motion.div whileHover={{ y: -3 }} style={{ width: "100%" }}>
       <Paper
         elevation={0}
         sx={{
-          p: 3,
+          p: isMobile ? 2 : 3,
           borderRadius: 3,
           background: `${color}10`,
           border: `1px solid ${color}20`,
@@ -411,27 +455,42 @@ const StatCard = ({ value, label, icon, color }) => {
             boxShadow: `0 8px 24px ${color}15`,
             borderColor: `${color}40`,
           },
+          width: "100%",
+          boxSizing: "border-box",
         }}
       >
         <Stack direction="row" alignItems="center" spacing={2}>
           <Box
             sx={{
-              p: 2,
+              p: isMobile ? 1 : 2,
               borderRadius: "50%",
               background: `${color}20`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               border: `1px solid ${color}30`,
+              flexShrink: 0,
             }}
           >
             {icon}
           </Box>
-          <Box>
-            <Typography variant="h4" fontWeight={700}>
+          <Box sx={{ overflow: "hidden" }}>
+            <Typography
+              variant={isMobile ? "h5" : "h4"}
+              fontWeight={700}
+              noWrap
+            >
               {value}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               {label}
             </Typography>
           </Box>
@@ -441,7 +500,7 @@ const StatCard = ({ value, label, icon, color }) => {
   );
 };
 
-// Enhanced Session Card Component
+// Session Card Component
 const SessionCard = ({ session, onClick, isFeatured = false }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -467,23 +526,30 @@ const SessionCard = ({ session, onClick, isFeatured = false }) => {
           border: `2px solid ${theme.palette.primary.light}`,
           boxShadow: `0 4px 20px ${theme.palette.primary.light}15`,
         }),
+        width: "100%",
+        boxSizing: "border-box",
       }}
     >
-      <CardContent sx={{ p: 3 }}>
+      <CardContent sx={{ p: isMobile ? 2 : 3 }}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-start",
             gap: 1,
+            mb: 1,
           }}
         >
           <Typography
-            variant="h6"
+            variant={isMobile ? "subtitle1" : "h6"}
             component="h3"
             sx={{
               fontWeight: 600,
-              mb: 2,
+              flex: 1,
+              minWidth: 0,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
               background: isFeatured
                 ? `linear-gradient(90deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`
                 : "none",
@@ -502,58 +568,63 @@ const SessionCard = ({ session, onClick, isFeatured = false }) => {
                 background: `${theme.palette.primary.light}30`,
                 color: theme.palette.primary.dark,
                 fontWeight: 500,
+                flexShrink: 0,
               }}
             />
           )}
         </Box>
 
-        <Chip
-          label={session.status || "draft"}
-          size="small"
-          icon={
-            session.status === "published" ? (
-              <Publish fontSize="small" />
-            ) : (
-              <Drafts fontSize="small" />
-            )
-          }
-          sx={{
-            mb: 2,
-            background:
-              session.status === "published"
-                ? `${theme.palette.success.light}30`
-                : `${theme.palette.warning.light}30`,
-            color:
-              session.status === "published"
-                ? theme.palette.success.dark
-                : theme.palette.warning.dark,
-            border:
-              session.status === "published"
-                ? `1px solid ${theme.palette.success.light}`
-                : `1px solid ${theme.palette.warning.light}`,
-            fontWeight: 500,
-          }}
-        />
-
-        {session.createdAt && (
-          <Typography
-            variant="body2"
-            color="text.secondary"
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+          <Chip
+            label={session.status || "draft"}
+            size="small"
+            icon={
+              session.status === "published" ? (
+                <Publish fontSize="small" />
+              ) : (
+                <Drafts fontSize="small" />
+              )
+            }
             sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              mb: 1,
+              background:
+                session.status === "published"
+                  ? `${theme.palette.success.light}30`
+                  : `${theme.palette.warning.light}30`,
+              color:
+                session.status === "published"
+                  ? theme.palette.success.dark
+                  : theme.palette.warning.dark,
+              border:
+                session.status === "published"
+                  ? `1px solid ${theme.palette.success.light}`
+                  : `1px solid ${theme.palette.warning.light}`,
+              fontWeight: 500,
             }}
-          >
-            <CalendarToday fontSize="small" sx={{ opacity: 0.7 }} />
-            {new Date(session.createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </Typography>
-        )}
+          />
+
+          {session.createdAt && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                ml: "auto",
+                flexShrink: 0,
+              }}
+            >
+              <CalendarToday
+                fontSize="small"
+                sx={{ opacity: 0.7, fontSize: "14px" }}
+              />
+              {new Date(session.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}
+            </Typography>
+          )}
+        </Box>
 
         <Box
           sx={{
