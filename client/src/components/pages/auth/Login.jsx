@@ -34,7 +34,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     login.mutate({
-      email: data.email.trim(),
+      email: data.email.trim().toLowerCase(),
       password: data.password,
     });
   };

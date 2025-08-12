@@ -40,7 +40,7 @@ const Register = () => {
     }
     registerMutation.mutate({
       name: data.name.trim(),
-      email: data.email.trim(),
+      email: data.email.trim().toLowerCase(),
       password: data.password,
     });
   };
